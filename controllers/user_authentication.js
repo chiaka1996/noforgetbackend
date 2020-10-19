@@ -6,13 +6,13 @@ const jwt = require("jsonwebtoken");
 
 const user_registration_models= require("../models/user_authentication");
 
-let errorArray= [];
+
 
 
 
 exports.user_registration= (req, res) => {
 
-  errorArray = [];
+  let errorArray= [];
 
   const usernameRegex = /[a-z]+[0-9]*/gi;
 
@@ -60,20 +60,7 @@ if (password.length < 7) {
           userProfile.save()
             .then(() => {
 
-              const token = jwt.sign(
-                { userId: user._id},
-                'RANDOM_TOKEN_SECRET_NUMBER',
-                { expiresIn: '24h'}
-            );
-
-            res.status(200).json({
-              _id: user._id,
-              username: user.username,
-              email: user.email,
-              password: user.password,
-              token,
-              message: "user registered"
-            });
+            res.status(200).json("user registered");
             })
             .catch((err) => res.status(400).json(`Error: ${err}`)); 
       }
