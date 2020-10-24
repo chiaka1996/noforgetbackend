@@ -12,4 +12,6 @@ router.post("/userLogin", student_authentication.userLogin);
 
 router.post('/addplan', addTodoPlans.addPlan);
 
+router.post("/getplans", addTodoPlans.getPlans);
+
 module.exports= router;

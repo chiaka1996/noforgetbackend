@@ -22,3 +22,13 @@ exports.addPlan = (req, res) => {
     }
 
 }
+
+//get specific user plans from the database
+exports.getPlans = (req, res) => {
+    Addplans.find({email: req.body.email})
+    .then(
+        (userPlans) => {
+            res.status(200).json(userPlans);
+        }
+    ).catch((err) => res.status(400).json(err))
+}
