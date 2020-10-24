@@ -28,7 +28,7 @@ exports.getPlans = (req, res) => {
     Addplans.find({email: req.body.email})
     .then(
         (userPlans) => {
-            res.status(200).json(userPlans);
+            res.status(200).json([...userPlans]);
         }
     ).catch((err) => res.status(400).json(err))
 }
