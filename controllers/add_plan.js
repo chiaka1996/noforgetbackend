@@ -2,7 +2,7 @@ const Addplans = require("../models/plans");
 
 exports.addPlan = (req, res) => {
 
-    const { plan, planDate } = req.body;
+    const { plan, planDate, email } = req.body;
     
     if(!plan) {
         res.status(201).json('plan cannot be empty')
@@ -10,7 +10,8 @@ exports.addPlan = (req, res) => {
     else {
         const addedPlan = new Addplans({
             plan,
-            planDate
+            planDate,
+            email
         })
 
         addedPlan.save()
