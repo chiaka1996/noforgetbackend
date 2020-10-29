@@ -1,17 +1,23 @@
 const router= require("express").Router();
 
-const student_authentication= require("../controllers/user_authentication");
+const User_authentication= require("../controllers/user_authentication");
 
 const addTodoPlans =  require('../controllers/add_plan')
 
 // const tutor_authentication= require("./controllers/tutor_authentication");
 
-router.post("/userProfile", student_authentication.user_registration);
+router.post("/userProfile", User_authentication.user_registration);
 
-router.post("/userLogin", student_authentication.userLogin);
+router.post("/userLogin", User_authentication.userLogin);
 
 router.post('/addplan', addTodoPlans.addPlan);
 
 router.post("/getplans", addTodoPlans.getPlans);
+
+router.post("/deleteplan", addTodoPlans.deletePlan);
+
+router.post("/editplan", addTodoPlans.editPlan);
+
+router.post("/changepassword",  User_authentication.changePassword);
 
 module.exports= router;

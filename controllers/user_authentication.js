@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const user_registration_models= require("../models/user_authentication");
 
+//register users
 exports.user_registration= (req, res) => {
 
   let errorArray= [];
@@ -120,4 +121,56 @@ if (password.length < 7) {
       ).catch((err) => res.status(400).json(`Error: ${err}`)); 
       }
     }  
+  }
+
+  //change password
+  exports.changePassword = (req, res) => {
+    const {_id,username,email, oldPassword, newPassword} = req.body
+
+    if(!oldPassword || !newPassword) {
+      res.status(201).json("please fill all fields")
+    }
+    else{
+
+      if (oldPassword.length < 7 || newPassword < 7) {
+        res.status(201).json("password should be 7 or more characters")
+      }
+      else {
+        user_registration_models.findOne({ _id })
+        .then(
+          (response) => {
+            console.log(response);
+            if (response) {
+              bcrypt.compare(oldPassword, response.password).then(
+                (valid) => {
+                  if (!valid) {
+                    res.status(201).json('incorrect old password')
+                  }
+                  else {
+                    bcrypt.hash(newPassword, 10).then(
+                      (hash) => {
+                    const passwordchange = new user_registration_models({
+                      _id,
+                      username,
+                      password: hash,
+                      email,
+                  })
+
+                  user_registration_models.updateOne({_id: req.body._id}, passwordchange)
+                  .then(() => {
+                      res.status(200).json('password changed successfully');
+          
+                  }).catch((err) => res.status(400).json(err))
+          
+                }).catch((err) => res.status(400).json(err))
+                }
+                }
+              )
+
+            }
+          }
+        )
+      }
+
+    }    
   }
