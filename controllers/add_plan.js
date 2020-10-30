@@ -33,8 +33,9 @@ exports.getPlans = (req, res) => {
     ).catch((err) => res.status(400).json(err))
 }
 
+//delete plan from the database
 exports.deletePlan = (req, res) => {
-    Addplans.deleteOne({_id: req.body.id})
+    Addplans.deleteOne({_id: req.body._id})
     .then(
         () => {
             res.status(200).json('plan deleted')
@@ -42,6 +43,7 @@ exports.deletePlan = (req, res) => {
     ).catch((err) => res.status(400).json(err))
 }
 
+//editplan in the database
 exports.editPlan = (req, res) => {
     const { _id, plan, planDate, email } = req.body;
 
