@@ -5,7 +5,8 @@ const Plan_profile= mongoose.Schema;
 const plan_model =  new Plan_profile({
     plan: {type: String, required: true},
     planDate: {type: String, required: true},
-    email: {type: String, required: true}
+    email: {type: String, required: true},
+    status: {type: Boolean, required: true}
 },
 {
     timestamps : true

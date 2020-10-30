@@ -2,7 +2,7 @@ const Addplans = require("../models/plans");
 
 exports.addPlan = (req, res) => {
 
-    const { plan, planDate, email } = req.body;
+    const { plan, planDate, email, status } = req.body;
     
     if(!plan) {
         res.status(201).json('plan cannot be empty')
@@ -11,7 +11,8 @@ exports.addPlan = (req, res) => {
         const addedPlan = new Addplans({
             plan,
             planDate,
-            email
+            email,
+            status
         })
 
         addedPlan.save()
@@ -55,7 +56,8 @@ exports.editPlan = (req, res) => {
             _id,
             plan,
             planDate,
-            email
+            email,
+            status
         })
 
         Addplans.updateOne({_id: req.body._id}, updateplan)
