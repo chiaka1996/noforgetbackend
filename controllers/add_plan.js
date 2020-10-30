@@ -46,7 +46,7 @@ exports.deletePlan = (req, res) => {
 
 //editplan in the database
 exports.editPlan = (req, res) => {
-    const { _id, plan, planDate, email } = req.body;
+    const { _id, plan, planDate, email, status } = req.body;
 
     if(!plan) {
         res.status(201).json('plan cannot be empty')
