@@ -191,7 +191,8 @@ if (password.length < 7) {
         else {
         let newPassword =   generatePassword(12, false, /\w/)
         var transporter = nodemailer.createTransport({
-          service: 'gmail',
+          host: 'smtp.zoho.com',
+          port: 587,
           auth: {
             user: process.env.EMAIL,
             pass: process.env.PASSWORD
@@ -199,7 +200,7 @@ if (password.length < 7) {
         })
 
         var mailOptions = {
-          from: 'chikajunior19@gmail.com',
+          from: 'chiakajunior@zohomail.com',
           to: email,
           subject: 'YOUR NEW PASSWORD FROM noForget',
           text: newPassword
