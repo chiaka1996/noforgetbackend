@@ -181,6 +181,7 @@ if (password.length < 7) {
   //forgort password
   exports.forgotPassword = (req, res) => {
     const {email} = req.body
+    console.log(email)
     user_registration_models.findOne({ email }).then(
       (userProfile) => {
         if (!userProfile) {
@@ -206,7 +207,8 @@ if (password.length < 7) {
 
         transporter.sendMail(mailOptions, (error, data) => {
           if (error) {
-            res.status(201).json('unverified email')
+            
+            res.status(201).json(error)
           } else {
 
             bcrypt.hash(newPassword, 10).then(
