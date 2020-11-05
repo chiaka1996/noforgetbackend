@@ -20,4 +20,8 @@ router.post("/editplan", addTodoPlans.editPlan);
 
 router.post("/changepassword",  User_authentication.changePassword);
 
+router.post("/forgotpassword", User_authentication.forgotPassword);
+
+router.post("/updateprofile", User_authentication.updateProfile);
+
 module.exports= router;

@@ -68,3 +68,25 @@ exports.editPlan = (req, res) => {
         
     }
 }
+
+//update plan status
+exports.updateStatus = (req, res) => {
+    const { _id, plan, planDate, email, status } = req.body;
+
+        const updatestatus = new Addplans({
+            _id,
+            plan,
+            planDate,
+            email,
+            status
+        })
+
+        Addplans.updateOne({ _id }, updatestatus)
+        .then(() => {
+            res.status(200).json('status updated')
+
+        }).catch((err) => res.status(400).json(err))
+        
+    
+
+  }

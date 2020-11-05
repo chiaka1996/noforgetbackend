@@ -2,6 +2,10 @@ const bcrypt = require("bcrypt");
 
 const jwt = require("jsonwebtoken"); 
 
+const generatePassword = require('password-generator');
+
+const nodemailer = require('nodemailer');
+
 const user_registration_models= require("../models/user_authentication");
 
 //register users
@@ -139,7 +143,6 @@ if (password.length < 7) {
         user_registration_models.findOne({ _id })
         .then(
           (response) => {
-            console.log(response);
             if (response) {
               bcrypt.compare(oldPassword, response.password).then(
                 (valid) => {
@@ -147,11 +150,11 @@ if (password.length < 7) {
                     res.status(201).json('incorrect old password')
                   }
                   else {
-                    bcrypt.hash(newPassword, 10).then(
+                   bcrypt.hash(newPassword, 10).then(
                       (hash) => {
                     const passwordchange = new user_registration_models({
                       _id,
-                      username,
+                      username, 
                       password: hash,
                       email,
                   })
@@ -174,3 +177,106 @@ if (password.length < 7) {
 
     }    
   }
+
+  //forgort password
+  exports.forgotPassword = (req, res) => {
+    const {email} = req.body
+    user_registration_models.findOne({ email }).then(
+      (userProfile) => {
+        if (!userProfile) {
+          res.status(201).json('email does not exist')
+        }
+
+        else {
+        let newPassword =   generatePassword(12, false, /\w/)
+        var transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: process.env.EMAIL,
+            pass: process.env.PASSWORD
+          }
+        })
+
+        var mailOptions = {
+          from: 'chikajunior19@gmail.com',
+          to: email,
+          subject: 'YOUR NEW PASSWORD FROM noForget',
+          text: newPassword
+        }
+
+        transporter.sendMail(mailOptions, (error, data) => {
+          if (error) {
+            res.status(201).json('unverified email')
+          } else {
+
+            bcrypt.hash(newPassword, 10).then(
+              (hash) => {
+            const forgottenPassword = new user_registration_models({
+              _id: userProfile._id,
+              username: userProfile.username,
+              password: hash,
+              email: userProfile.email
+          })
+
+          user_registration_models.updateOne({email: userProfile.email}, forgottenPassword)
+          .then(() => {
+              res.status(200).json('please, check your email for your new password');
+  
+          }).catch((err) => res.status(400).json(err))
+  
+        }).catch((err) => res.status(400).json(err))
+          }
+        })
+        // res.status(200).json(newPassword);
+        }
+      }).catch((err) => res.status(400).json(err))
+
+  }
+
+  //update profile
+  exports.updateProfile = (req, res) => {
+
+    let errorArray= [];
+
+    const usernameRegex = /[a-z]+[0-9]*/gi;
+  
+    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/gi;
+
+    const {_id, email, username, password} = req.body
+
+    if ( !email || !username || !_id ) {
+      res.status(201).json('please fill all fields')
+    }
+
+    else {
+
+      if (!usernameRegex.test(username) || username.length < 5 || username.length > 7) {
+        errorArray.push('username should start with a letter, contain omly letters and numbers, be between 5 & 7 characters')
+    }
+    
+    if (!emailRegex.test(email)) {
+        errorArray.push('please input the correct email');
+      }
+
+      if (errorArray.length < 1) {
+
+        const updateprofile = new user_registration_models({
+          _id,
+          username,
+          password,
+          email
+      })
+
+        user_registration_models.updateOne({ _id }, updateprofile)
+        .then(
+          () => {
+            res.status(200).json('profile updated successfully')
+          }
+        ).catch((err) => res.status(400).json(err))
+       
+      }
+    }
+  }
+
+  
+

@@ -17,7 +17,9 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.6.2",
     "mongoose": "^5.10.9",
-    "nodemon": "^2.0.5"
+    "nodemailer": "^6.4.14",
+    "nodemon": "^2.0.5",
+    "password-generator": "^2.3.2"
   },
   "engines": {
     "node": "13.8.0"
