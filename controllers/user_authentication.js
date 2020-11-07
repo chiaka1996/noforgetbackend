@@ -248,7 +248,7 @@ if (password.length < 7) {
     const {_id, email, username, password} = req.body
 
     if ( !email || !username || !_id ) {
-      res.status(201).json('please fill all fields')
+      errorArray.push('please fill all fields')
     }
 
     else {
@@ -277,6 +277,8 @@ if (password.length < 7) {
           }
         ).catch((err) => res.status(400).json(err))
        
+      } else {
+        res.status(201).json(errorArray)
       }
     }
   }
