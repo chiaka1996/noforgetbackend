@@ -270,10 +270,30 @@ if (password.length < 7) {
           email
       })
 
+
         user_registration_models.updateOne({ _id }, updateprofile)
         .then(
           () => {
-            res.status(200).json('profile updated successfully')
+            // res.status(200).json('profile updated successsfully')
+            user_registration_models.findOne({_id})
+            .then(
+              (profile) => {
+
+                const token = jwt.sign(
+                  { userId: profile._id},
+                  'RANDOM_TOKEN_SECRET_NUMBER',
+                  { expiresIn: '24h'}
+              );
+
+                res.status(200).json({
+                  _id: profile._id,
+                  username: profile.username,
+                  email: profile.email,
+                  password: profile.password,
+                  token
+                })
+              }
+            )
           }
         ).catch((err) => res.status(400).json(err))
        
@@ -282,6 +302,7 @@ if (password.length < 7) {
       }
     }
   }
+
 
   
 
