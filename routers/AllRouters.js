@@ -18,6 +18,8 @@ router.post("/deleteplan", addTodoPlans.deletePlan);
 
 router.post("/editplan", addTodoPlans.editPlan);
 
+router.post("/updatestatus", addTodoPlans.updateStatus);
+
 router.post("/changepassword",  User_authentication.changePassword);
 
 router.post("/forgotpassword", User_authentication.forgotPassword);
