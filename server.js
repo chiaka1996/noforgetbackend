@@ -24,10 +24,15 @@ const api = require('./routers/AllRouters.js');
 
 app.use('/apis', api );
 
-cron.schedule("01 * * * * *", () => {
-    console.log("cron is working")
+cron.schedule("* * 23 * * *", () => {
     cronJob.cronJobs();
-});
+},
+{
+    scheduled: true,
+    timezone: "Africa/Lagos"
+  }
+
+);
 
  const server = http.createServer(app);
 server.listen(port);
