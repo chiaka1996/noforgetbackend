@@ -2,6 +2,8 @@ const http = require('http');
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const cron = require('node-cron');
+const cronJob = require("./controllers/cronJob");
 
 require('dotenv').config();
 
@@ -21,6 +23,11 @@ connection.once('open',(res) => {
 const api = require('./routers/AllRouters.js');
 
 app.use('/apis', api );
+
+cron.schedule("01 * * * * *", () => {
+    console.log("cron is working")
+    cronJob.cronJobs();
+});
 
  const server = http.createServer(app);
 server.listen(port);
